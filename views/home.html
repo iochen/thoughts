@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link href="/main.css" rel="stylesheet">
+	<title>Title</title>
+</head>
+<body>
+
+<header id="header" class="header bg-white animated headroom--not-bottom slideDown headroom--top">
+	<div class="navbar-container">
+		<a href="/" class="navbar-logo">
+			<h1>{{- .Config.Name -}}</h1>
+		</a>
+		<div class="navbar-menu">
+			<a href="/archive">Archive</a>
+			<a href="/about">About</a>
+		</div>
+		<div class="navbar-search">
+			<span class="icon-search"></span>
+			<form id="search" method="POST" action="/search">
+				<span class="search-box">
+					<input type="text" id="input" class="input"
+						   name="s" required placeholder="Search..."
+							maxlength="30" autocomplete="off">
+				</span>
+			</form>
+		</div>
+		<div class="navbar-mobile-menu" onclick=""><span class="icon-menu cross"><span class="middle"></span></span>
+			<ul>
+				<li><a href="/archive">Archive</a></li>
+				<li><a href="/about">About</a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+
+<div class="main">
+	<div class="lists">
+		<div class="lists-body">
+            {{ range $thought := .Thoughts }}
+				<div class="onelist-item">
+					<div class="onelist-item-container">
+						<div class="onelist-item-info">
+							<div class="item-title">
+								<a>{{ $thought.Title }}</a>
+							</div>
+							<div class="item-meta">
+								<time datetime="{{ $thought.Date }}"
+									  itemprop="datePublished">
+									Published at
+                                    {{ $thought.Date.Format "2006-01-02 15:04:05" }}</time>
+							</div>
+							<div class="item-meta-hr bg-deepgrey"></div>
+							<div class="item-content"><p>
+                                    {{ $thought.HTML }}
+								</p></div>
+						</div>
+					</div>
+				</div>
+            {{ end }}
+		</div>
+	</div>
+	<div class="lists-navigator">
+		<ol class="page-navigator">
+            {{ $page := .Page }}
+            {{ range $pg := .PageList }}
+				<li {{ if eq $pg $page }} class="current" {{ end }}><a href="/?p={{- $pg -}}">{{- $pg -}}</a></li>
+            {{ end }}
+		</ol>
+	</div>
+</div>
+
+
+</body>
+</html>
