@@ -853,12 +853,12 @@ input:-ms-input-placeholder,textarea:-ms-input-placeholder {
     margin: 0
 }
 
-.onelist-item:nth-child(n) {
+.onelist-item:nth-child(2n) {
     background-color: #f7f7f7
 }
 
-.onelist-item:nth-child(2n) {
-    background-color: #fff
+.onelist-item:nth-child(4n) {
+    background-color: #fff !important;
 }
 
 .onelist-item-container {
@@ -896,7 +896,7 @@ input:-ms-input-placeholder,textarea:-ms-input-placeholder {
 
 .onelist-item-container .item-content {
     padding: 0 30px 10px;
-    text-align: center;
+    /*text-align: center;*/
     word-break: break-all
 }
 
@@ -2105,13 +2105,12 @@ input:-ms-input-placeholder,textarea:-ms-input-placeholder {
         padding: 20px 20px 25px
     }
 
-    .onelist-item-container .item-content {
-        display: none
-    }
-
-    .onelist-item-container .item-readmore {
-        display: none
-    }
+    /*.onelist-item-container .item-content {*/
+    /*    display: none*/
+    /*}*/
+    /*.onelist-item-container .item-readmore {*/
+    /*    display: none*/
+    /*}*/
 
     .onelist-item-container .onelist-item-thumb {
         min-height: 180px

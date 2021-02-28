@@ -27,7 +27,7 @@ func main() {
 			logrus.Fatalf("An error occurred when creating a new database: %s.", err.Error())
 			os.Exit(1)
 		}
-		logrus.Warnln("Your password:",DefaultConfig.Password)
+		logrus.Warnln("Your password:", DefaultConfig.Password)
 	} else {
 		logrus.Infof("Can not get status of database at %s, with error:%s.", *flagSQLite, err.Error())
 	}
@@ -53,16 +53,17 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
-	app.Get("/", handler.HandleHome)
-	app.Get("/admin", handler.HandleAdmin)
+	app.Get("/", handler.HandleHomeWithPage)
+	app.Get("/p/:pid", handler.HandleHomeWithPage)
+	//app.Get("/search", handler.HandleSearch)
 	app.Get("/admin/login", handler.HandleAdminLogin)
 	app.Post("/admin/login", handler.HandlePOSTAdminLogin)
-	//app.Get("/admin/new", handler.HandleAdminNew)
+	app.Post("/new", handler.HandlePOSTNew)
 	//app.Thought("/admin/new", handler.HandlePOSTAdminNew)
 	//app.Get("/admin/config", handler.HandleAdminConfig)
 	//app.Thought("/admin/config", handler.HandlePOSTAdminConfig)
 
-	app.Static("/",conf.Static)
+	app.Static("/", conf.Static)
 
 	logrus.Infof("Listening at %s.", *flagAddr)
 	app.Listen(*flagAddr)

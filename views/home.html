@@ -4,6 +4,11 @@
 	<meta charset="UTF-8">
 	<link href="/main.css" rel="stylesheet">
 	<title>Title</title>
+	<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+    {{ if .LoggedIn }}
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+		<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    {{ end }}
 </head>
 <body>
 
@@ -13,19 +18,18 @@
 			<h1>{{- .Config.Name -}}</h1>
 		</a>
 		<div class="navbar-menu">
-			<a href="/archive">Archive</a>
-			<a href="/about">About</a>
+			<a href="/about.html">About</a>
 		</div>
-		<div class="navbar-search">
-			<span class="icon-search"></span>
-			<form id="search" method="POST" action="/search">
-				<span class="search-box">
-					<input type="text" id="input" class="input"
-						   name="s" required placeholder="Search..."
-							maxlength="30" autocomplete="off">
-				</span>
-			</form>
-		</div>
+        {{/*		<div class="navbar-search">*/}}
+        {{/*			<span class="icon-search"></span>*/}}
+        {{/*			<form id="search" method="GET" action="/search">*/}}
+        {{/*				<span class="search-box">*/}}
+        {{/*					<input type="text" id="input" class="input"*/}}
+        {{/*						   name="s" required placeholder="Search..."*/}}
+        {{/*							maxlength="30" autocomplete="off">*/}}
+        {{/*				</span>*/}}
+        {{/*			</form>*/}}
+        {{/*		</div>*/}}
 		<div class="navbar-mobile-menu" onclick=""><span class="icon-menu cross"><span class="middle"></span></span>
 			<ul>
 				<li><a href="/archive">Archive</a></li>
@@ -36,14 +40,29 @@
 </header>
 
 <div class="main">
+    {{ if .LoggedIn }}
+		<div style="padding: 2em 20%">
+			<form method="post" action="/new">
+				<label for="title" style="font-size: 2em;width: 20%">Title:</label>
+				<input name="title" id="title"
+					   style="width: 80%; height: 2em; border: 2px solid #999999; font-size: 2em; margin-bottom: 1em; padding-left: 3px">
+				<textarea id="markdown" name="markdown"></textarea>
+				<button style="height: 4em;width: 8em">New</button>
+			</form>
+			<script>
+                var simplemde = new SimpleMDE({element: document.getElementById("markdown")});
+			</script>
+		</div>
+    {{ end }}
 	<div class="lists">
 		<div class="lists-body">
             {{ range $thought := .Thoughts }}
+				<a id="{{- $thought.TID -}}"></a>
 				<div class="onelist-item">
 					<div class="onelist-item-container">
 						<div class="onelist-item-info">
 							<div class="item-title">
-								<a>{{ $thought.Title }}</a>
+								<a href="#{{- $thought.TID -}}">{{ $thought.Title }}</a>
 							</div>
 							<div class="item-meta">
 								<time datetime="{{ $thought.Date }}"
@@ -65,7 +84,7 @@
 		<ol class="page-navigator">
             {{ $page := .Page }}
             {{ range $pg := .PageList }}
-				<li {{ if eq $pg $page }} class="current" {{ end }}><a href="/?p={{- $pg -}}">{{- $pg -}}</a></li>
+				<li {{ if eq $pg $page }} class="current" {{ end }}><a href="/p/{{- $pg -}}">{{- $pg -}}</a></li>
             {{ end }}
 		</ol>
 	</div>
